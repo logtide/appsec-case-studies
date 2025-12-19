@@ -1,57 +1,66 @@
-# Vulnerability Report Template (Safe / Reusable)
+# Vulnerability Report Template (AppSec)
 
-> Use this template for internal write-ups or responsible disclosures.
-> Keep evidence minimal, redact secrets, and never include real credentials.
-
----
+> Use only for authorized testing (internal environments, your own apps, or programs with explicit permission).
 
 ## Title
-**[Vuln Class]** – short description (e.g., “BOLA/IDOR via missing object-level authorization on resource read”)
+[Short] [Vuln class] in [component] allows [impact]  
+Example: `BOLA in Orders API allows unauthorized order access`
 
 ## Summary (1–3 sentences)
-What is vulnerable, at a high level, and why it matters.
+What the issue is, where it lives, and the outcome if exploited.
 
-## Severity
-- **Proposed severity:** Low / Medium / High / Critical
-- **Reasoning:** (impact + likelihood + reach)
-- **Scoring (optional):** CVSS v3.1 vector (if you use it)
+## Severity (and rationale)
+- Proposed severity: [Low/Med/High/Critical]
+- Rationale: data sensitivity, exploitability, affected users, required privileges
 
-## Affected Component(s)
-- Service / feature name:
-- Environment: prod / staging / test
-- Entry points (generic): API route type, UI page, workflow step  
-  *(Avoid posting full real URLs publicly.)*
+## Affected component(s)
+- Service/API:
+- Endpoint(s):
+- Parameters/objects involved:
+- Environments: [dev/stage/prod]
+- Versions/commit:
 
 ## Preconditions
-What access is required?
-- Anonymous / Authenticated user / Admin
-- Specific role required? Y/N
-- Any feature flags / settings?
+- Auth required? [yes/no]
+- Role required? [user/admin/etc]
+- Any special account state?
 
-## Root Cause
-Describe the engineering cause, not the symptom.
-Examples:
-- Missing **object-level authorization** checks
-- AuthZ check performed on the wrong identifier (user-controlled)
-- Trusting client-supplied roles/claims
-- Insecure direct reference to internal IDs
+## Steps to reproduce (authorized environments only)
+> Keep concise and deterministic.
+1.
+2.
+3.
 
-## Security Impact
-What a malicious actor could do **in plain language**:
-- Read other users’ data?
-- Modify/delete resources?
-- Escalate privileges?
-- Pivot to other systems?
+## Expected vs actual
+- Expected:
+- Actual:
 
-Also note **data types** potentially exposed (PII, tokens, billing, etc.).
+## Impact
+- What data/actions become possible?
+- Which user groups are affected?
+- Business/compliance risk (if relevant)
 
-## Evidence (Redacted)
-Attach minimal proof:
-- Screenshots with redactions
-- Sanitized request/response snippets (placeholders)
-- Logs (sanitized)
+## Root cause (best guess)
+Explain the missing/failed control (e.g., missing object-level authorization check).
 
-Example (generic):
-```http
-GET /api/resource/{RESOURCE_ID}  HTTP/1.1
-Authorization: Bearer [REDACTED]
+## Evidence
+- Request/response snippets (redacted)
+- Screenshots (redacted)
+- Logs / request IDs / timestamps (if available)
+
+## Remediation guidance
+Concrete fix suggestions:
+- Authorization pattern to implement
+- Scoping query recommendation
+- Centralizing policy/middleware
+
+## Verification / regression tests
+What to test to ensure the fix sticks:
+- positive test (authorized)
+- negative test (unauthorized)
+- edge cases (tenant boundaries, role changes, deleted objects)
+
+## References
+- OWASP: Broken Access Control
+- OWASP API Top 10: BOLA
+- Internal coding standards (if applicable)
