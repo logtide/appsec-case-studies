@@ -1,66 +1,68 @@
-# Vulnerability Report Template (AppSec)
+# Vulnerability Report Template (Lean)
 
-> Use only for authorized testing (internal environments, your own apps, or programs with explicit permission).
+> Defensive use only. Do not include secrets, private URLs, customer data, or real credentials.
 
-## Title
-[Short] [Vuln class] in [component] allows [impact]  
-Example: `BOLA in Orders API allows unauthorized order access`
+## 1) Summary
+**Title:**  
+**Category:** (AuthZ / AuthN / IDOR / XSS / SSRF / etc.)  
+**Severity:** (Low/Med/High/Critical) + rationale  
+**Status:** (Draft / Submitted / Fixed / Verified)
 
-## Summary (1–3 sentences)
-What the issue is, where it lives, and the outcome if exploited.
+## 2) Impact (1–3 bullets)
+- What an attacker could achieve
+- What data/actions are exposed
+- Who is affected (users, admins, orgs)
 
-## Severity (and rationale)
-- Proposed severity: [Low/Med/High/Critical]
-- Rationale: data sensitivity, exploitability, affected users, required privileges
+## 3) Affected component
+- Product / service:
+- Endpoint / feature area:
+- Environments: (prod/stage) — **keep generic**
+- Roles required: (unauth / user / admin)
 
-## Affected component(s)
-- Service/API:
-- Endpoint(s):
-- Parameters/objects involved:
-- Environments: [dev/stage/prod]
-- Versions/commit:
+## 4) Preconditions
+- Required permissions (if any)
+- Required feature flags / settings
+- Any assumptions (e.g., “object IDs are guessable”)
 
-## Preconditions
-- Auth required? [yes/no]
-- Role required? [user/admin/etc]
-- Any special account state?
+## 5) Evidence
+Attach or describe:
+- Relevant logs / screenshots (redacted)
+- Request/response snippets (redacted, non-operational)
+- Timestamps (UTC)
 
-## Steps to reproduce (authorized environments only)
-> Keep concise and deterministic.
-1.
-2.
-3.
+## 6) Reproduction (authorized testing only)
+> Keep steps minimal and non-exploitative. Use placeholders.
 
-## Expected vs actual
-- Expected:
-- Actual:
+1. Authenticate as **User A**.
+2. Perform **Action X** on **Object A**.
+3. Attempt the same action on **Object B** that belongs to **User B**.
+4. Observe whether the server enforces ownership / policy.
 
-## Impact
-- What data/actions become possible?
-- Which user groups are affected?
-- Business/compliance risk (if relevant)
+**Expected:** Server returns 403/404 or equivalent.  
+**Actual:** Server returns data / performs action (describe).
 
-## Root cause (best guess)
-Explain the missing/failed control (e.g., missing object-level authorization check).
+## 7) Root cause (likely)
+- Missing server-side authorization check on object access
+- Over-trusting client-supplied identifiers
+- Confused deputy / role scoping issue
+- Incomplete policy checks across microservices
 
-## Evidence
-- Request/response snippets (redacted)
-- Screenshots (redacted)
-- Logs / request IDs / timestamps (if available)
+## 8) Recommended fix
+- Enforce authorization on every object access (deny-by-default)
+- Centralize policy checks (middleware/service layer)
+- Scope queries by tenant/user (row-level authorization)
+- Prefer opaque IDs (helps, but **not a substitute** for authz)
+- Add audit logs for sensitive object access
 
-## Remediation guidance
-Concrete fix suggestions:
-- Authorization pattern to implement
-- Scoping query recommendation
-- Centralizing policy/middleware
+## 9) Verification plan (how to prove it’s fixed)
+- Unit tests: “User A cannot access User B’s object”
+- Integration tests on key endpoints
+- Regression checks for list/export endpoints
+- Monitor logs for denied access attempts post-fix
 
-## Verification / regression tests
-What to test to ensure the fix sticks:
-- positive test (authorized)
-- negative test (unauthorized)
-- edge cases (tenant boundaries, role changes, deleted objects)
-
-## References
-- OWASP: Broken Access Control
-- OWASP API Top 10: BOLA
-- Internal coding standards (if applicable)
+## 10) Redaction checklist
+- [ ] No secrets/tokens
+- [ ] No real user identifiers
+- [ ] No internal hostnames
+- [ ] No customer/org data
+- [ ] Generic endpoints / placeholders only
