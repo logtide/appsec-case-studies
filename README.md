@@ -1,22 +1,32 @@
 # appsec-case-studies
 
-Short, defensive AppSec write-ups focused on *root cause → impact → fixes → verification*.
+Lean, recruiter-friendly AppSec case studies + a repeatable vuln report template.
 
-**Scope**
-- No real targets, no customer data, no exploit chains.
-- Examples are **sanitized** and framed for **authorized testing only**.
+## What this repo is
+A small set of writeups that show how I think about:
+- threat modeling and impact
+- root cause analysis
+- safe, responsible validation
+- pragmatic remediation + verification
 
-## Contents
+## Safety / scope
+- Defensive / educational content only.
+- No “how to break in” walkthroughs.
+- No real targets, no customer/org data, no secrets.
+- Examples are generic and meant for authorized testing or lab environments.
 
-### Case studies
-- [BOLA / IDOR (Broken Object Level Authorization)](case-studies/bola-idor.md)
+## Structure
+- `case-studies/` — short case studies (one per file)
+- `templates/` — copy/paste templates I use for writing clean reports
 
-### Templates
-- [Vulnerability report template](templates/vuln-report-template.md)
+## Case studies
+- `case-studies/bola-idor.md` — Broken Object Level Authorization (BOLA/IDOR)
 
-## Why this exists (recruiter version)
-I use these to demonstrate how I think:
-- identify the security control that failed (usually **authorization**),
-- articulate business impact,
-- propose practical mitigations,
-- define verification steps and regression tests.
+## How to use
+If you’re reviewing:
+1. Open a case study.
+2. Skim **Impact**, **Root causes**, **Fix**, **Verification**.
+
+If you’re writing your own:
+1. Copy `templates/vuln-report-template.md`
+2. Fill it with a redacted, authorized example.
